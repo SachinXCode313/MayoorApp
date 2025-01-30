@@ -1,0 +1,35 @@
+Session:
+    Headers - year, quarter, class, section, subject"
+
+Get/student : filter by -> class, section, year 
+    return - id,name 
+
+Get/RO : filter by -> year,subject
+    return - id,name
+
+Get/LO : filter by -> year,quarter,subject
+    return - id,name
+
+Post/LO : 
+    pass - name,
+    headers - year,quarter,subject
+
+Get/AC : filter by -> subject year quarter
+    return - id,name,max_marks
+
+Post/AC :
+    pass - name, max_marks
+    header - subject,quarter,year
+
+Get/ACScore : filter by -> studentID
+    return - id, name, score
+
+Post/ACScore : filter by -> id ,studentId
+    pass - score 
+
+Get/LOScore : filter by -> studentId
+    return - id, name, score
+
+Get/ROscore : filter by -> studentId
+    return - id, name, score
+

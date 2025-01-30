@@ -1,0 +1,184 @@
+/*
+
+CREATE TABLE subjects (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE table teachers{
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+}
+
+CREATE TABLE report_outcomes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    subject INT,
+    year INT,
+    FOREIGN KEY (subject) REFERENCES subjects(id)
+);
+
+CREATE TABLE learning_outcomes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    subject INT,
+    class INT,
+    quarter INT,
+    year INT,
+    FOREIGN KEY (subject) REFERENCES subjects(id)
+);
+
+CREATE TABLE assessment_criterias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    max_marks INT,
+    subject INT,
+    class INT,
+    quarter INT,
+    year INT,
+    FOREIGN KEY (subject) REFERENCES subjects(id)
+);
+
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE students_records (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT ,
+    class INT,
+    section VARCHAR(20),
+    year INT NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+);
+
+CREATE TABLE lo_ac_mapping (
+    lo_id INT,
+    ac_id INT,
+    priority VARCHAR(10),
+    PRIMARY KEY (lo_id,ac_id),
+    FOREIGN KEY (lo_id) REFERENCES learning_outcomes(id),
+    FOREIGN KEY (ac_id) REFERENCES assessment_criterias(id)
+);
+
+CREATE TABLE ro_lo_mapping (
+    ro_id INT,
+    lo_id INT,
+    priority VARCHAR(10),
+    PRIMARY KEY (ro_id,lo_id),
+    FOREIGN KEY (ro_id) REFERENCES report_outcomes(id),
+    FOREIGN KEY (lo_id) REFERENCES assessment_criterias(id)
+);
+
+CREATE TABLE ac_scores (
+    student_id INT,
+    ac_id INT,
+    value DECIMAL(5, 2),
+    PRIMARY KEY (student_id, ac_id),
+    FOREIGN KEY (student_id) REFERENCES students_records(id),
+    FOREIGN KEY (ac_id) REFERENCES assessment_criterias(id)
+);
+
+CREATE TABLE lo_scores (
+    student_id INT,
+    lo_id INT,
+    value DECIMAL(5, 2),
+    PRIMARY KEY (student_id, lo_id),
+    FOREIGN KEY (student_id) REFERENCES students_records(id),
+    FOREIGN KEY (lo_id) REFERENCES learning_outcomes(id)
+);
+
+CREATE TABLE ro_scores (
+    student_id INT,
+    ro_id INT,
+    value DECIMAL(5, 2),
+    PRIMARY KEY (student_id, ro_id),    
+    FOREIGN KEY (student_id) REFERENCES students_records(id),
+    FOREIGN KEY (ro_id) REFERENCES report_outcomes(id)
+);
+
+
+................................................................................................................................
+Post/section :
+    pass - year, quarter, class, section, subject
+
+Get/student : filter by -> class, section, year 
+    return - enroll no. ,student name 
+
+Get/LO :  filter by -> year, subject
+    return - name,id
+
+Post/LO :
+    pass - name, priority, mapping-RO-array
+
+Get/LO : filter by -> year, subject, quarter
+    return - name, priority,id
+
+Post/AC :
+    pass - name, priority, mapping-LO-array
+
+get/AC : filter by -> subject year quarter
+ return - name priority,id
+
+Post/ACScore : filter by -> id ,studentId
+    pass - score 
+
+Get/ACScore : filter by -> studentID
+    return - id, name, score
+
+Get/LOScore : filter by -> studentId
+    return - id, name, score
+
+Get/ROscore : filter by -> studentId 
+    return - id, name, score
+
+................................................................................................................................
+ChatGPT - https://chatgpt.com/c/678fd7cb-6828-8001-b4cc-aada36d969bd
+
+On delete cascade : is an SQL option that automatically deletes rows in a child table when a corresponding row is deleted from the parent table.
+
+
+Run Server : python -m http.server
+
+................................................................................................................................
+/* check ac is mapped or not in lo_ac_mapping */
+SELECT ac.id
+FROM assessment_criterias ac
+LEFT JOIN lo_ac_mapping lom ON ac.id = lom.ac_id
+WHERE lom.ac_id IS NULL;
+
+
+................................................................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
